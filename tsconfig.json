@@ -26,6 +26,8 @@
     "src" 
   ],
   "exclude": [
-    "DialerInteractionUtil.js"
+    "DialerInteractionUtil.js",
+    "five9.crm.sdk.js",
+    "index_combined.js"
   ] 
 }

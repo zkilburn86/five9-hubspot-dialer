@@ -1,0 +1,1 @@
+web: yarn serve -s build -l $PORT
