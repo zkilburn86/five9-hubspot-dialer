@@ -6,7 +6,7 @@ function App() {
     <div className="App">
       <header className="App-header">
       </header>
-      <body className="App-body">
+      <div className="App-body">
         <div className="Five9-header">
           <X color="white" size={20} id="exit-five9" cursor="pointer" />
         </div>
@@ -18,7 +18,7 @@ function App() {
             height="400px">
           </iframe>
         </div>
-      </body>
+      </div>
     </div>
   );
 }

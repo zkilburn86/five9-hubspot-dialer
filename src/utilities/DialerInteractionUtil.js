@@ -15,7 +15,7 @@ class DialerInteractionHandler {
         const state = {};
       
         const cti = new CallingExtensions({
-          debugMode: true,
+          debugMode: false,
           eventHandlers: {
             onReady: () => {
               cti.initialized({
