@@ -12,7 +12,7 @@ app.use(express_1.default.urlencoded({ extended: true }));
 app.use(express_1.default.json());
 app.use(cors());
 const engagement = require('./routes/engagement');
-app.use('/engagement', engagement);
+app.use('/api/engagement', engagement);
 app.listen(port, () => {
     return console.log(`Server is listening on port ${port}`);
 });

@@ -31,6 +31,7 @@
     "index_combined.js",
     "CallingExtensions.js",
     "Constants.js",
-    "IFrameManager.js"
+    "IFrameManager.js",
+    "setupProxy.js"
   ]
 }
