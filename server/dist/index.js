@@ -4,15 +4,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const cors = require('cors');
+const path_1 = __importDefault(require("path"));
 require('dotenv').config();
+const morgan = require('morgan');
+const cors = require('cors');
 const port = process.env.PORT || 8000;
 const app = (0, express_1.default)();
+app.use(morgan('tiny'));
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use(express_1.default.json());
 app.use(cors());
 const engagement = require('./routes/engagement');
 app.use('/api/engagement', engagement);
+if (process.env.NODE_ENV === 'production') {
+    app.use(express_1.default.static('build'));
+    app.get('*', (req, res) => res.sendFile(path_1.default.resolve('build', 'index.html')));
+}
 app.listen(port, () => {
     return console.log(`Server is listening on port ${port}`);
 });
