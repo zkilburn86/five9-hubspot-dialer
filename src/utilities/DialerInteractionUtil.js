@@ -1,10 +1,13 @@
 import CallingExtensions from "@hubspot/calling-extensions-sdk";
+import RelationshipMapper from './RelationshipMapper';
+import axios from 'axios';
+
+let relationshipMapper = new RelationshipMapper();
 
 class DialerInteractionHandler {
 
-  static callback = () => {
+  callback() {
         const interactionApi = window.Five9.CrmSdk.interactionApi();
-        const customComponentsApi = window.Five9.CrmSdk.customComponentsApi();
         const crmApi = window.Five9.CrmSdk.crmApi();
       
         const defaultSize = {
@@ -26,6 +29,20 @@ class DialerInteractionHandler {
             onDialNumber: (data, rawEvent) => {
               const { phoneNumber } = data;
               state.phoneNumber = phoneNumber;
+              console.log('HS onDialNumber: ' + JSON.stringify(data));
+              
+              relationshipMapper.user.hubspotUserId = data.ownerId;
+              console.log('HS onDialNumber User: ' + JSON.stringify(relationshipMapper.user));
+
+              relationshipMapper.contact.recordId = data.objectId;
+              relationshipMapper.contact.phoneNumber = data.phoneNumber;
+              console.log('HS onDialNumber Contact: ' + JSON.stringify(relationshipMapper.contact));
+
+              relationshipMapper.engagement.recordId = data.objectId;
+              relationshipMapper.engagement.ownerId = data.ownerId;
+              relationshipMapper.engagement.type = 'CALL';
+              console.log('HS onDialNumber Engagement: ' + JSON.stringify(relationshipMapper.contact));
+
               window.setTimeout(
                 () =>
                   cti.outgoingCall({
@@ -36,15 +53,20 @@ class DialerInteractionHandler {
               );
             },
             onEngagementCreated: (data, rawEvent) => {
+              console.log('HS onEngagementCreated: ' + JSON.stringify(data));
               const { engagementId } = data;
               state.engagementId = engagementId;
+              relationshipMapper.engagement.engagementId = data.engagementId;
+              console.log('HS onEngagementCreated Engagement: ' + JSON.stringify(relationshipMapper.engagement));
             },
-            onEndCall: () => {
+            onEndCall: (data) => {
+              console.log('HS onCallEnd: ' + JSON.stringify(data));
               window.setTimeout(() => {
                 cti.callEnded();
               }, 500);
             },
             onVisibilityChanged: (data, rawEvent) => {
+              console.log('HS onVisibilityChanged: ' + JSON.stringify(data));
             }
           }
         });
@@ -58,189 +80,120 @@ class DialerInteractionHandler {
                     myEmailsTodayEnabled: false,
                     showContactInfo: false
                 };
-                console.log({
-                    data: params
-                });
                 return Promise.resolve(config);
             },
             search: function (params) {
-                console.log({
-                    data: params
-                });
+              console.log('F9 Search: ' + JSON.stringify(params));
                 var crmObjects = [{id: "123", label: "Contact", name: "Joe", isWho: true, isWhat: false, fields:[{displayName: "Company", value: "ABC"}]}];
                 return Promise.resolve({crmObjects: crmObjects, screenPopObject: crmObjects[0]}); 
     
             },
             saveLog: function (params) {
-                console.log({
-                    data: params
-                });
+              console.log('F9 Save Log: ' + JSON.stringify(params));
             },
             screenPop: function (params) {
-                console.log({
-                    data: params
-                });
+              console.log('F9 Screen Pop: ' + JSON.stringify(params));
             },
             getTodayCallsCount: function (params) {
-                console.log({
-                    data: params
-                });
+              console.log('F9 Today Call Count: ' + JSON.stringify(params));
                 return Promise.resolve(77);
             },
             getTodayChatsCount: function (params) {
-                console.log({
-                    data: params
-                });
+              console.log('F9 Today Chat Count: ' + JSON.stringify(params));
                 return Promise.resolve(77);;
             },
             getTodayEmailsCount: function (params) {
-                console.log({
-                    data: params
-                });
+              console.log('F9 Today Email Count: ' + JSON.stringify(params));
                 return Promise.resolve(11);;
             },
             openMyCallsToday: function (params) {
-                console.log({
-                    data: params
-                });
+              console.log('F9 Open My Calls Today: ' + JSON.stringify(params));
             },
             openMyChatsToday: function (params) {
-                console.log({
-                    data: params
-                });
+              console.log('F9 Open My Chats Today: ' + JSON.stringify(params));
             },
             contactSelected: function (params, contactModel) {
-                console.log({
-                    data: params
-                });
+              console.log('F9 Contact Selected: ' + JSON.stringify(params));
             },
             enableClickToDial: function (params) {
+              console.log('F9 Enable Click 2 Dial: ' + JSON.stringify(params));
                 cti.initialized({
                     isLoggedIn: true
                 });
                 cti.userLoggedIn();
             },
             disableClickToDial: function (params) {
-                console.log({
-                    data: params
-                });
+              console.log('F9 Disable Click To Dial: ' + JSON.stringify(params));
             },
             _beforeCallFinished: function(params) {
-                console.log({
-                    data: params
-                });
+              console.log('F9 Before Call Finished: ' + JSON.stringify(params));
               }
         });
     
         interactionApi.subscribe({
             callStarted: function (params) {
-                console.log({
-                    data: params.callData,
-                    interactionId: params.callData.interactionId
-                });
-                cti.outgoingCall({
-                    phoneNumber: params.callData.dnis,
-                    createEngagement: "true",
-                    data: params.callData
-                });
+                console.log('F9 Call Started: ' + JSON.stringify(params));
             },
     
             callFinished: function (params) {
-                console.log({
-                    data: params
-                });
+              let engagementId = relationshipMapper.engagement.engagementId;
+              console.log('F9 Call Finished: ' + JSON.stringify(params));
                 cti.callCompleted({
-                    engagementId: state.engagementId,
+                    engagementId: engagementId,
                     hideWidget: true
+                });
+                axios.post('/engagement',{
+                  engagementId: engagementId,
+                  status: 'COMPLETED',
+                  fromNumber: '(575) 221-0446'
                 });
             },
     
             callAccepted: function (params) {
-                console.log({
-                    data: params
-                });
+              console.log('F9 Call Accepted: ' + JSON.stringify(params));
                 cti.callAnswered();
             },
     
             callRejected: function (params) {
-                console.log({
-                    data: params
-                });
+              console.log('F9 Call Rejected: ' + JSON.stringify(params));
                 cti.callEnded({
                     data: params
                 });
             },
     
             callEnded: function (params) {
-                console.log({
-                    data: params
-                });
+              console.log('F9 Call Ended: ' + JSON.stringify(params));
                 cti.callEnded({
                   data: params
                 });
             }
         });
-    
-        customComponentsApi.registerCustomComponents({template: `<adt-components>
-              <adt-component location="3rdPartyComp-li-call-tab" label="3rdPartyComp-li-call-tab" style="flex-direction: column">
-                <adt-input value="Initial value" id="aaa1" name="input1" label="Credit card1" placeholder="this is placeholder1"
-                           onchange="callTabInputCallback"></adt-input>
-                <adt-btn-group label="Group of buttons">
-                    <!-- comments are ignored and styles are filtered by whitelisting -->
-                    <adt-button name="button1" label="Yes" class="btnPrimary" style="flex-grow: 1; justify-content: center;"
-                                onclick="callTabYesCallback">Yes</adt-button>
-                    <adt-button name="button2" label="No" class="btnSecondary" style="flex-grow: 1"
-                                onclick="callTabNoCallback"></adt-button>
-                </adt-btn-group>
-              </adt-component>
-              <adt-component location="3rdPartyComp-li-call-details-bottom" label="3rdPartyComp-li-call-details-bottom" style="flex-direction: row; justify-content: space-between; align-items: flex-end;">
-                <adt-input value="Initial value" name="input2" label="Credit card2" placeholder="this is placeholder1"
-                           onchange="callDetailsInputCallback"></adt-input>
-                <adt-button name="button3" label="Verify" class="btnPrimary" style="justify-content: center;"
-                            onclick="callDetailsButtonCallback"></adt-button>
-              </adt-component>
-            </adt-components>
-            `,
-            callbacks: {
-              callTabInputCallback: function(params){
-                console.log({
-                  data: params
-                });
-               
-              },
-    
-              callTabYesCallback: function(params){
-                console.log({
-                  data: params
-                });
-               
-              },
-              callTabNoCallback: function(params){
-                console.log({
-                  data: params
-                });
-               
-              },
-              callDetailsInputCallback: function(params){
-                console.log({
-                  data: params
-                });
-               
-              },
-              callDetailsButtonCallback: function(params){
-                console.log({
-                  data: params
-                });
-               
-              }
-              
-          }}); 
+
+        interactionApi.subscribeWsEvent({
+          '10010': (params, content) => {
+            if (content.userName && content.userId) {
+              relationshipMapper.user.five9Username = content.userName;
+              relationshipMapper.user.five9UserId = content.userId;
+            }
+            console.log('From WS New User: ' + JSON.stringify(relationshipMapper.user));
+          }
+        });
+
     
           const exit_btn = document.getElementById('exit-five9');
           exit_btn.addEventListener('click', function () {
             cti.callCompleted();
-          });   
-    };
+          });
+          
+          /* const handleMessage = (event) => {  
+            if (event.origin !== 'https://app.hubspot.com') {
+              return;
+            }
+            console.log('Message Data = ' + JSON.stringify(event.data));
+          };
+
+          window.addEventListener('message', handleMessage); */
+    }
     
 }
 

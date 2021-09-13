@@ -5,14 +5,16 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import DialerInteractionHandler from './utilities/DialerInteractionUtil';
 
+let dialerInteractions = new DialerInteractionHandler();
+
 const callback = () => {
   if (
     document.readyState === "interactive" ||
     document.readyState === "complete"
   ) {
-    window.setTimeout(() => DialerInteractionHandler.callback(), 1000);
+    window.setTimeout(() => dialerInteractions.callback(), 1000);
   } else {
-    document.addEventListener("DOMContentLoaded", DialerInteractionHandler.callback);
+    document.addEventListener("DOMContentLoaded", dialerInteractions.callback);
   }
 }
 
