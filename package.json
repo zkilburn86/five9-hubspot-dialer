@@ -1,20 +1,22 @@
 {
-    "name": "five9-hubspot-dialer",
-    "version": "0.1.0",
-    "private": true,
-    "scripts": {
-      "start": "node ./server/dist/index.js",
-      "build": "yarn compile && cd react-ui && yarn install && yarn build",
-      "compile": "cd server && yarn install && yarn build"
-    },
-    "eslintConfig": {
-      "extends": [
-        "react-app",
-        "react-app/jest"
-      ]
-    },
-    "engines": {
-      "node": "16.5.x"
-    }
+  "name": "five9-hubspot-dialer",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./server/dist/index.js",
+    "build": "yarn compile && cd react-ui && yarn install && yarn build",
+    "compile": "cd server && yarn install && yarn build"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "engines": {
+    "node": "16.5.x"
+  },
+  "devDependencies": {
+    "typescript": "^4.4.3"
   }
-  
+}
