@@ -17,8 +17,8 @@ app.use(cors());
 const engagement = require('./routes/engagement');
 app.use('/api/engagement', engagement);
 if (process.env.NODE_ENV === 'production') {
-    app.use(express_1.default.static('build'));
-    app.get('*', (req, res) => res.sendFile(path_1.default.resolve('build', 'index.html')));
+    app.use(express_1.default.static(path_1.default.join(__dirname, '..', '..', 'react-ui', 'build')));
+    app.get('*', (req, res) => res.sendFile(path_1.default.resolve(__dirname, '..', '..', 'react-ui', 'build', 'index.html')));
 }
 app.listen(port, () => {
     return console.log(`Server is listening on port ${port}`);

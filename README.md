@@ -14,39 +14,32 @@ Further Five9 and Hubspot documentation:
 
 In the project directory, you can run:
 
-### `yarn start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
 ### `yarn build`
 
-Builds the app for production to the `build` folder.\
+Builds the app for production to the `react-ui/build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### `yarn compile`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+This executes Typescript compliation in the `server` folder.\
+This is necessary after changes to server files.
+
+### `yarn start`
+
+Runs the dialer in the development mode.\
+Serves the static build files via the server and is equivalent to running `node server/dist/index.js` \
+Open [http://localhost:5000](http://localhost:5000) to view it in the browser.
 
 ## Heroku
 
-Heroku is not a requirement, but was used to quickly spin up a production environment. See [Getting Started on Heroku with Node.js](https://devcenter.heroku.com/articles/getting-started-with-nodejs) for more information. Once you have an account and the Heroku CLI installed:
-
-See existing Procfile for production build commands.
+Production version live on Heroku at [five9-hubspot-dialer.herokuapp.com](https://five9-hubspot-dialer.herokuapp.com)
+See [Getting Started on Heroku with Node.js](https://devcenter.heroku.com/articles/getting-started-with-nodejs) for more information. \
+Once you have an account and the Heroku CLI installed:
 
 `heroku create [APP_NAME]`
 
 `git push heroku main`
 
-`heroku ps:scale web=1 api=1`
+`heroku ps:scale web=1`
 
 `heroku open`

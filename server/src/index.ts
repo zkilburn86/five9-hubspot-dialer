@@ -19,10 +19,10 @@ const engagement = require('./routes/engagement');
 app.use('/api/engagement', engagement);
 
 if (process.env.NODE_ENV === 'production') {
-    app.use(express.static('build'));
+    app.use(express.static(path.join(__dirname, '..', '..', 'react-ui', 'build')));
 
     app.get('*', (req, res) =>
-        res.sendFile(path.resolve('build', 'index.html'))
+        res.sendFile(path.resolve(__dirname, '..', '..', 'react-ui', 'build','index.html'))
     );
 }
 
