@@ -1,6 +1,5 @@
 import CallingExtensions from "@hubspot/calling-extensions-sdk";
 import RelationshipMapper from './RelationshipMapper';
-import axios from 'axios';
 
 let relationshipMapper = new RelationshipMapper();
 
@@ -61,9 +60,6 @@ class DialerInteractionHandler {
             },
             onEndCall: (data) => {
               console.log('HS onCallEnd: ' + JSON.stringify(data));
-              window.setTimeout(() => {
-                cti.callEnded();
-              }, 500);
             },
             onVisibilityChanged: (data, rawEvent) => {
               console.log('HS onVisibilityChanged: ' + JSON.stringify(data));
@@ -137,15 +133,33 @@ class DialerInteractionHandler {
     
             callFinished: function (params) {
               let engagementId = relationshipMapper.engagement.engagementId;
+              let url = 'https://five9-hubspot-dialer.herokuapp.com/api/engagement/';
+              if (process.env.NODE_ENV !== 'production') {
+                url = '/api/engagement/';
+              }
               console.log('F9 Call Finished: ' + JSON.stringify(params));
                 cti.callCompleted({
-                    engagementId: engagementId,
+                    createEngagement: true,
                     hideWidget: true
                 });
-                axios.post('/api/engagement',{
-                  engagementId: engagementId,
-                  status: 'COMPLETED',
-                  fromNumber: '(575) 221-0446'
+                
+                fetch(url, {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                    engagementId: engagementId,
+                    status: 'COMPLETED',
+                    fromNumber: '(575) 221-0446'
+                  })
+                })
+                .then(response => response.json())
+                .then(data => {
+                  console.log('Success: ', data);
+                })
+                .catch((error) => {
+                  console.error('Error: ', error);
                 });
             },
     
@@ -156,15 +170,14 @@ class DialerInteractionHandler {
     
             callRejected: function (params) {
               console.log('F9 Call Rejected: ' + JSON.stringify(params));
-                cti.callEnded({
-                    data: params
-                });
+                cti.callEnded();
             },
     
             callEnded: function (params) {
               console.log('F9 Call Ended: ' + JSON.stringify(params));
                 cti.callEnded({
-                  data: params
+                  createEngagement: true,
+                  status: 'COMPLETED'
                 });
             }
         });
