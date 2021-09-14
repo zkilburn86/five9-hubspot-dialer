@@ -3,9 +3,9 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-      "start": "node ./server/dist/index.js &",
-      "build": "cd react-ui && yarn install && yarn build",
-      "compile": "cd server && yarn build"
+      "start": "node ./server/dist/index.js",
+      "build": "yarn compile && cd react-ui && yarn install && yarn build",
+      "compile": "cd server && yarn install && yarn build"
     },
     "eslintConfig": {
       "extends": [

@@ -8,7 +8,7 @@ const path_1 = __importDefault(require("path"));
 require('dotenv').config();
 const morgan = require('morgan');
 const cors = require('cors');
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 5000;
 const app = (0, express_1.default)();
 app.use(morgan('tiny'));
 app.use(express_1.default.urlencoded({ extended: true }));

@@ -17,6 +17,7 @@ In the project directory, you can run:
 ### `yarn build`
 
 Builds the app for production to the `react-ui/build` folder.\
+Compiles the Server code `cd server && tsc`. \
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
 ### `yarn compile`
