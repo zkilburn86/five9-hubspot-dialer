@@ -16,20 +16,20 @@ In the project directory, you can run:
 
 ### `yarn build`
 
-Builds the app for production to the `react-ui/build` folder.\
-Compiles the Server code `cd server && tsc`. \
+Installs dependencies and builds the react ui contained in the `react-ui` directory.\
+Compiles the server code contained in the `server` directory. \
 It correctly bundles React in production mode and optimizes the build for the best performance.
-
-### `yarn compile`
-
-This executes Typescript compliation in the `server` folder.\
-This is necessary after changes to server files.
 
 ### `yarn start`
 
 Runs the dialer in the development mode.\
-Serves the static build files via the server and is equivalent to running `node server/dist/index.js` \
+Serves the static build files via the server and is equivalent to running `node ./server/dist/index.js` \
 Open [http://localhost:5000](http://localhost:5000) to view it in the browser.
+
+### `yarn deploy`
+
+This adds all tracked files and creates a commit with a "heroku deploy" message. \
+It then pushes to the origin main branch and Heroku main to build and deploy.
 
 ## Heroku
 
@@ -39,7 +39,9 @@ Once you have an account and the Heroku CLI installed:
 
 `heroku create [APP_NAME]`
 
-`git push heroku main`
+`yarn build`
+
+`yarn deploy`
 
 `heroku ps:scale web=1`
 
