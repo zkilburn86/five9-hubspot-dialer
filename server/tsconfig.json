@@ -10,7 +10,11 @@
     },
     "typeRoots": [
       "src/typings",
-      "./node_modules/@types/"
+      "node_modules/@types/"
+    ],
+    "types": [
+      "node",
+      "express"
     ],
     "sourceMap": true,
     "outDir": "dist",
