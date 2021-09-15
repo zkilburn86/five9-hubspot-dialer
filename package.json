@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./server/dist/index.js",
-    "build": "yarn install --cwd /react-ui && yarn build --cwd /react-ui && yarn install --cwd /server && yarn build --cwd /server",
+    "build": "yarn --cwd ./react-ui install && yarn --cwd ./react-ui build && yarn --cwd ./server install && yarn --cwd ./server build",
     "deploy": "git add . && git commit -m \"heroku deploy\" && git push origin main && git push heroku main"
   },
   "eslintConfig": {
