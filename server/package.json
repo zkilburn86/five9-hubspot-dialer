@@ -1,7 +1,7 @@
 {
   "name": "dialer-server",
   "version": "0.1.0",
-  "main": "index.js",
+  "main": "dist/index.js",
   "private": true,
   "scripts": {
     "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",

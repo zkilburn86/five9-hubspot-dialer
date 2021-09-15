@@ -8,7 +8,7 @@ type EngagementUpdate = {
 }
 
 module.exports = {
-    postEngagement: (req: express.Request, res: express.Response) => {
+    postEngagement: (req, res) => {
         updateEngagement(req.body as EngagementUpdate);
         res.status(200).json({created: true});
         return;
