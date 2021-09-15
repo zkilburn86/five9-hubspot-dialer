@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "start": "node ./server/dist/index.js",
-    "build": "yarn compile && cd react-ui && yarn install && yarn build",
-    "compile": "cd server && yarn install && yarn build"
+    "postinstall": "cd server && tsc",
+    "build": "cd react-ui && yarn build",
+    "deploy": "git add . && git commit -m \"heroku deploy\" && git push origin main && git push heroku main"
   },
   "eslintConfig": {
     "extends": [
