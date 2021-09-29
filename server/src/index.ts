@@ -13,12 +13,36 @@ const rateLimit = require('express-rate-limit');
 
 const port = process.env.PORT || 5000;
 
+const passport = require('./middlewares/passport');
+
 const app = express();
 app.use(morgan('tiny'));
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.use(cors());
+app.use(helmet());
+app.use(hpp());
+
+app.use(
+    session({
+        name: 'session',
+        secret: process.env.COOKIE_SECRET,
+        expires: new Date(Date.now() + 6 * 60 * 60 * 1000), // 6 hours
+    })
+);
+app.use(csurf());
+
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+});
+app.use(limiter);
+
+app.use(passport.initialize());
+
+const authRoutes = require('./routes/auth');
+app.use('/auth', authRoutes);
 
 const engagement = require('./routes/engagement');
 app.use('/api/engagement', engagement);
