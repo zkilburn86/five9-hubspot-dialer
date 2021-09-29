@@ -5,6 +5,11 @@ require('dotenv').config();
 
 const morgan = require('morgan');
 const cors = require('cors');
+const session = require('cookie-session');
+const helmet = require('helmet');
+const hpp = require('hpp');
+const csurf = require('csurf');
+const rateLimit = require('express-rate-limit');
 
 const port = process.env.PORT || 5000;
 
