@@ -1,26 +1,8 @@
 import passport from 'passport';
-
-const express = require('express');
-//const axios = require('axios');
-const jwt = require('jsonwebtoken');
+import express from 'express';
+import jwt from 'jsonwebtoken';
 
 const router = express.Router();
-
-//TODO: Move to API
-/* function retrieveDispositions (auth) {
-    axios.get('https://api.hubapi.com/calling/v1/dispositions', {
-        headers: {
-            'Authorization': 'Bearer ' + auth.token,
-            'Accept': 'application/json'
-        }
-    })
-    .then((response) => {
-        console.log(response);
-    })
-    .catch((err) => {
-        console.error(err);
-    })
-}; */
 
 router.get(
     '/login',
@@ -38,7 +20,6 @@ router.get(
 router.get('/callback', (req, res, next) => {
     passport.authenticate('hubspot', (profile) => {
         if (!profile) {
-            console.log('not logged in');
             return res.redirect('/login');
         }
         req.session.jwt = jwt.sign(profile, process.env.JWT_SECRET_KEY);
@@ -49,12 +30,6 @@ router.get('/callback', (req, res, next) => {
 router.get('/logout', (req, res) => {
     req.session = null;
     res.redirect('/');
-});
-
-const jwtRequired = passport.authenticate('jwt', { session: false });
-
-router.get('/private-route', jwtRequired, (req, res) => {
-    return res.send('This is a private route');
 });
 
 router.get('/current-session', (req, res) => {

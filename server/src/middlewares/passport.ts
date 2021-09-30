@@ -18,7 +18,6 @@ passport.use(new JwtStrategy(
         secretOrKey: process.env.JWT_SECRET_KEY,
     },
     (payload, done) => {
-        // TODO: add additional jwt token verification
         return done(null, payload);
     }
 ));

@@ -53,10 +53,10 @@ let sess: cookieSession = {
     secret: uuidv4(),
     expires: new Date(Date.now() + 6 * 60 * 60 * 1000) // 6 hours
 };
-if (isProd) {
+/* if (isProd) {
     sess.secure = true;
     sess.sameSite = 'none';
-} 
+}  */
 app.use(session(sess));
 app.use(csurf());
 
@@ -73,6 +73,9 @@ app.use('/auth', authRoutes);
 
 const engagement = require('./routes/engagement');
 app.use('/api/engagement', engagement);
+
+const disposition = require('./routes/disposition');
+app.use('/api/disposition', disposition);
 
 if (isProd) {
     app.use(express.static(path.join(__dirname, '..', '..', 'react-ui', 'build')));
