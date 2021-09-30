@@ -1,7 +1,18 @@
 import express from 'express';
 import path from 'path';
+import { v4 as uuidv4 } from 'uuid';
+
+type cookieSession = {
+    name: string,
+    secret: string,
+    expires: Date,
+    secure?: boolean
+    sameSite?: string
+}
 
 require('dotenv').config();
+
+const isProd = process.env.NODE_ENV === 'production' ? true : false;
 
 const morgan = require('morgan');
 const cors = require('cors');
@@ -21,16 +32,32 @@ app.use(morgan('tiny'));
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.use(cors());
-app.use(helmet());
+app.use(helmet({
+    contentSecurityPolicy: {
+        useDefaults: false,
+        directives: {
+            "default-src": ["'self'"],
+            "script-src": ["'self'", "https://code.jquery.com", "https://cdnjs.cloudflare.com", "'sha256-G2fRka9lB4aluMRByPZWSlTusEZO/ht+n0eYeALQEcg='"],
+            "style-src": ["'self'"],
+            "img-src": ["'self'"],
+            "connect-src": ["'self'"],
+            "frame-src": ["'self'", "https://app.five9.com"],
+            "frame-ancestors": ["https://app.hubspot.com"]
+        }
+    }
+}));
 app.use(hpp());
 
-app.use(
-    session({
-        name: 'session',
-        secret: process.env.COOKIE_SECRET,
-        expires: new Date(Date.now() + 6 * 60 * 60 * 1000), // 6 hours
-    })
-);
+let sess: cookieSession = {
+    name: 'session',
+    secret: uuidv4(),
+    expires: new Date(Date.now() + 6 * 60 * 60 * 1000) // 6 hours
+};
+if (isProd) {
+    sess.secure = true;
+    sess.sameSite = 'none';
+} 
+app.use(session(sess));
 app.use(csurf());
 
 const limiter = rateLimit({
@@ -47,7 +74,7 @@ app.use('/auth', authRoutes);
 const engagement = require('./routes/engagement');
 app.use('/api/engagement', engagement);
 
-if (process.env.NODE_ENV === 'production') {
+if (isProd) {
     app.use(express.static(path.join(__dirname, '..', '..', 'react-ui', 'build')));
 
     app.get('*', (req, res) =>
