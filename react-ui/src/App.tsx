@@ -1,5 +1,5 @@
 import './App.css';
-import { X } from 'react-feather';
+import { X, LogOut } from 'react-feather';
 import { LoopCircleLoading } from 'react-loadingg';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -9,7 +9,16 @@ function dialerElement(isHidden: boolean): JSX.Element {
       <div className="App-body">
         <div  hidden={isHidden}>
           <div className="Five9-header">
-            <X color="white" size={20} id="exit-five9" cursor="pointer" />
+            <div className="flex-container">
+              <div className="flex-child">
+                <X color="white" size={20} id="exit-five9" cursor="pointer" />
+              </div>
+              <div className="flex-child">
+                <a href={"/auth/logout"}>
+                  <LogOut color="white" size={20} id="logout-hs" cursor="pointer" />
+                </a>
+              </div>
+            </div>
           </div>
           <div className='Panel-body'>
             <iframe 

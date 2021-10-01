@@ -47,6 +47,23 @@
   width: 304px;
 }
 
+.flex-container {
+  display: flex;
+}
+
+.flex-child {
+  flex: 1;
+}
+
+#exit-five9 {
+  float: left;
+  padding-top: 5px;
+}
+
+#logout-hs {
+  margin-bottom: 5px;
+}
+
 .Login-button {
   border: none;
   color: white;

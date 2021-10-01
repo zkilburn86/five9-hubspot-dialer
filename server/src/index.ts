@@ -13,6 +13,7 @@ type cookieSession = {
 require('dotenv').config();
 
 const isProd = process.env.NODE_ENV === 'production' ? true : false;
+const httpsRequired = process.env.REQUIRE_HTTPS === 'true' ? true : false;
 
 const morgan = require('morgan');
 const cors = require('cors');
@@ -42,7 +43,8 @@ app.use(helmet({
                 "https://code.jquery.com", 
                 "https://cdnjs.cloudflare.com", 
                 "'sha256-G2fRka9lB4aluMRByPZWSlTusEZO/ht+n0eYeALQEcg='",
-                "'sha256-Sp5KYWn6waQ6HUfejFOTYk/gHJ4F2j8iWc82zHnH3PU='"
+                "'sha256-Sp5KYWn6waQ6HUfejFOTYk/gHJ4F2j8iWc82zHnH3PU='",
+                "'sha256-By8tg0wmYA/WBn3TRGe5fjD0QkgghbkF3lSDVOjckz0='"
             ],
             "style-src": [
                 "'self'",
@@ -63,7 +65,7 @@ let sess: cookieSession = {
     secret: uuidv4(),
     expires: new Date(Date.now() + 6 * 60 * 60 * 1000) // 6 hours
 };
-if (isProd) {
+if (httpsRequired) {
     sess.secure = true;
     sess.sameSite = 'none';
 } 
