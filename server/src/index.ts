@@ -67,6 +67,7 @@ if (isProd) {
     sess.secure = true;
     sess.sameSite = 'none';
 } 
+app.set('trust proxy', 1)
 app.use(session(sess));
 app.use(csurf());
 
