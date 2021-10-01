@@ -37,13 +37,23 @@ app.use(helmet({
         useDefaults: false,
         directives: {
             "default-src": ["'self'"],
-            "script-src": ["'self'", "https://code.jquery.com", "https://cdnjs.cloudflare.com", "'sha256-G2fRka9lB4aluMRByPZWSlTusEZO/ht+n0eYeALQEcg='"],
-            "style-src": ["'self'"],
+            "script-src": [
+                "'self'", 
+                "https://code.jquery.com", 
+                "https://cdnjs.cloudflare.com", 
+                "'sha256-G2fRka9lB4aluMRByPZWSlTusEZO/ht+n0eYeALQEcg='",
+                "'sha256-Sp5KYWn6waQ6HUfejFOTYk/gHJ4F2j8iWc82zHnH3PU='"
+            ],
+            "style-src": [
+                "'self'",
+                "'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='"
+            ],
             "img-src": ["'self'"],
             "connect-src": ["'self'"],
             "frame-src": ["'self'", "https://app.five9.com"],
             "frame-ancestors": ["https://app.hubspot.com"]
-        }
+        },
+        reportOnly: true
     }
 }));
 app.use(hpp());
@@ -53,10 +63,10 @@ let sess: cookieSession = {
     secret: uuidv4(),
     expires: new Date(Date.now() + 6 * 60 * 60 * 1000) // 6 hours
 };
-/* if (isProd) {
+if (isProd) {
     sess.secure = true;
     sess.sameSite = 'none';
-}  */
+} 
 app.use(session(sess));
 app.use(csurf());
 

@@ -1,5 +1,6 @@
 import './App.css';
 import { X } from 'react-feather';
+import { LoopCircleLoading } from 'react-loadingg';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -36,9 +37,7 @@ function App() {
     return (
       <div className="App">
           <header className="App-header">
-              <p>
-                  Loading...
-              </p>
+              <LoopCircleLoading/>
           </header>
           {dialerElement(true)}
       </div>
@@ -57,13 +56,15 @@ function App() {
     <div className="App">
       <header className="App-header">
           <p>
-              You are not logged in
+              Please sign in to use the dialer
           </p>
           <a
               className="App-link"
               href={"/auth/login"}
           >
-              Login Here
+              <button className="Login-button">
+                Login with HubSpot
+              </button>
           </a>
       </header>
       {dialerElement(true)}
