@@ -53,7 +53,10 @@ app.use(helmet({
             "img-src": ["'self'"],
             "connect-src": ["'self'"],
             "frame-src": ["'self'", "https://app.five9.com"],
-            "frame-ancestors": ["https://app.hubspot.com"]
+            "frame-ancestors": [
+                "'self'", 
+                "https://*.hubspot.com"
+            ]
         },
         reportOnly: true
     }
