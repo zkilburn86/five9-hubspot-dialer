@@ -51,11 +51,15 @@ app.use(helmet({
                 "'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='"
             ],
             "img-src": ["'self'"],
-            "connect-src": ["'self'"],
-            "frame-src": ["'self'", "https://app.five9.com"],
+            "connect-src": [
+                "'self'",
+                "*.five9.com",
+                "*.hubspot.com"
+            ],
+            "child-src": ["'self'", "*.five9.com"],
             "frame-ancestors": [
                 "'self'", 
-                "https://*.hubspot.com"
+                "*.hubspot.com"
             ]
         },
         reportOnly: true
