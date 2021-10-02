@@ -61,8 +61,7 @@ app.use(helmet({
                 "'self'", 
                 "*.hubspot.com"
             ]
-        },
-        reportOnly: true
+        }
     }
 }));
 app.use(hpp());
