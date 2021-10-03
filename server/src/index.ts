@@ -62,6 +62,9 @@ app.use(helmet({
                 "*.hubspot.com"
             ]
         }
+    },
+    crossOriginResourcePolicy: {
+        policy: "cross-origin"
     }
 }));
 app.use(hpp());
