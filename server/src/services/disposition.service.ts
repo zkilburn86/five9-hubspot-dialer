@@ -12,7 +12,7 @@ module.exports = {
     getDispositions: (req, res) => {
         passport.authenticate('jwt', { session: false }, (err, user) => {
             if (err || !user) {
-                res.status(404);
+                res.status(401);
             } else {
                 retrieveDispositions(user)
                 .then(data => {

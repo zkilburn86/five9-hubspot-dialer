@@ -1,4 +1,5 @@
 import express from 'express';
+import passport from 'passport';
 import axios from 'axios';
 
 type EngagementUpdate = {
@@ -9,8 +10,14 @@ type EngagementUpdate = {
 
 module.exports = {
     postEngagement: (req, res) => {
-        updateEngagement(req.body as EngagementUpdate);
-        res.status(200).json({created: true});
+      passport.authenticate('jwt', { session: false }, (err, user) => {
+        if (err || !user) {
+          res.status(401);
+        } else {
+          updateEngagement(req.body as EngagementUpdate);
+          res.status(200).json({created: true});
+        }
+      })(req, res);
         return;
     }
 }
