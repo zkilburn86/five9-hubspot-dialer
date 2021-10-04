@@ -23,6 +23,9 @@ class DialerInteractionHandler {
               cti.initialized({
                 isLoggedIn: true,
                 sizeInfo: defaultSize
+              })
+              .then((result) => {
+                console.log('cb on initialed result = ' + result.data);
               });
             },
             onDialNumber: (data, rawEvent) => {
@@ -142,8 +145,8 @@ class DialerInteractionHandler {
                 
                 fetch('/api/engagement/', {
                   method: 'POST',
-                  credentials: 'include',
-                  mode: 'cors',
+                  credentials: 'same-origin',
+                  mode: 'same-origin',
                   headers: {
                     'Content-Type': 'application/json'
                   },
