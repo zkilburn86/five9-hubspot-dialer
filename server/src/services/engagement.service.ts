@@ -6,6 +6,7 @@ type EngagementUpdate = {
     engagementId: number;
     status: string;
     fromNumber: string;
+    token?: string;
 }
 
 module.exports = {
@@ -14,7 +15,9 @@ module.exports = {
         if (err || !user) {
           res.status(401);
         } else {
-          updateEngagement(req.body as EngagementUpdate);
+          let requestBody: EngagementUpdate = req.body;
+          requestBody.token = user.token;
+          updateEngagement(requestBody);
           res.status(200).json({created: true});
         }
       })(req, res);
@@ -32,8 +35,8 @@ const updateEngagement = (requestBody: EngagementUpdate) => {
           }
         },
         {
-          params: {
-            hapikey: process.env.HAPI_KEY
+          headers: {
+            'Authorization': 'Bearer ' + requestBody.token
           }
         }
     ).then((response) => {        

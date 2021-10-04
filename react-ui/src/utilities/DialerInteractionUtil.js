@@ -23,9 +23,6 @@ class DialerInteractionHandler {
               cti.initialized({
                 isLoggedIn: true,
                 sizeInfo: defaultSize
-              })
-              .then((result) => {
-                console.log('cb on initialed result = ' + result.data);
               });
             },
             onDialNumber: (data, rawEvent) => {
