@@ -143,6 +143,7 @@ class DialerInteractionHandler {
                 fetch('/api/engagement/', {
                   method: 'POST',
                   credentials: 'include',
+                  mode: 'cors',
                   headers: {
                     'Content-Type': 'application/json'
                   },
