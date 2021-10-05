@@ -141,28 +141,7 @@ class DialerInteractionHandler {
                     hideWidget: true
                 });
                 
-                axios({
-                  url: '/api/engagement',
-                  method: 'POST',
-                  withCredentials: true,
-                  headers: {
-                    'Content-Type': 'application/json'
-                  },
-                  data: JSON.stringify({
-                    engagementId: engagementId,
-                    status: 'COMPLETED',
-                    fromNumber: '(575) 221-0446'
-                  })
-                })
-                .then(response => response.data)
-                .then(data => {
-                  console.log('Success: ', data);
-                })
-                .catch((error) => {
-                  console.error('Error: ', error);
-                }); 
-
-                /* fetch('/api/engagement/', {
+                fetch('/api/engagement/', {
                   method: 'POST',
                   credentials: 'same-origin',
                   mode: 'same-origin',
@@ -181,7 +160,7 @@ class DialerInteractionHandler {
                 })
                 .catch((error) => {
                   console.error('Error: ', error);
-                }); */
+                });
             },
     
             callAccepted: function (params) {
