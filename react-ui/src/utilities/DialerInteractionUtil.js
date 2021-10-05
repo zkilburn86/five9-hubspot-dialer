@@ -141,18 +141,10 @@ class DialerInteractionHandler {
                     hideWidget: true
                 });
                 
-                fetch('/api/engagement/', {
-                  method: 'POST',
+                fetch('/api/engagement?engagementId=' + engagementId, {
+                  method: 'GET',
                   credentials: 'same-origin',
-                  mode: 'same-origin',
-                  headers: {
-                    'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify({
-                    engagementId: engagementId,
-                    status: 'COMPLETED',
-                    fromNumber: '(575) 221-0446'
-                  })
+                  mode: 'same-origin'
                 })
                 .then(response => response.json())
                 .then(data => {
