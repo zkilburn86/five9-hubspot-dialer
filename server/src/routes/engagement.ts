@@ -3,6 +3,6 @@ const router = express.Router();
 
 const engagementService = require('../services/engagement.service');
 
-router.post('/', engagementService.postEngagement);
+router.get('/', engagementService.getEngagement);
 
 module.exports = router

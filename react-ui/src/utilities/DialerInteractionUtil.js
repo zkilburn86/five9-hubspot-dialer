@@ -1,5 +1,6 @@
 import CallingExtensions from "@hubspot/calling-extensions-sdk";
 import RelationshipMapper from './RelationshipMapper';
+import axios from 'axios';
 
 let relationshipMapper = new RelationshipMapper();
 
@@ -133,26 +134,17 @@ class DialerInteractionHandler {
     
             callFinished: function (params) {
               let engagementId = relationshipMapper.engagement.engagementId;
-              let url = 'https://five9-hubspot-dialer.herokuapp.com/api/engagement/';
-              if (process.env.NODE_ENV !== 'production') {
-                url = '/api/engagement/';
-              }
+              
               console.log('F9 Call Finished: ' + JSON.stringify(params));
                 cti.callCompleted({
                     createEngagement: true,
                     hideWidget: true
                 });
                 
-                fetch(url, {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify({
-                    engagementId: engagementId,
-                    status: 'COMPLETED',
-                    fromNumber: '(575) 221-0446'
-                  })
+                fetch('/api/engagement?engagementId=' + engagementId, {
+                  method: 'GET',
+                  credentials: 'same-origin',
+                  mode: 'same-origin'
                 })
                 .then(response => response.json())
                 .then(data => {
@@ -198,14 +190,6 @@ class DialerInteractionHandler {
             cti.callCompleted();
           });
           
-          /* const handleMessage = (event) => {  
-            if (event.origin !== 'https://app.hubspot.com') {
-              return;
-            }
-            console.log('Message Data = ' + JSON.stringify(event.data));
-          };
-
-          window.addEventListener('message', handleMessage); */
     }
     
 }
