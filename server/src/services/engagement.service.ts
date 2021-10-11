@@ -26,9 +26,7 @@ module.exports = {
 
 const updateEngagement = (user, req) => {
   let engagementId = req.query.engagementId;
-  let dispositionId = req.query.disposition;
-  console.log('Disposition ID = ' + dispositionId);
-  
+  let dispositionId = req.query.disposition;  
 
   let bodyMetadata: EngagementMetadata = {
     metadata: {
@@ -40,7 +38,6 @@ const updateEngagement = (user, req) => {
   if (dispositionId !== '') {
     bodyMetadata.metadata.disposition = dispositionId;
   }
-  console.log('Metadata = ' + JSON.stringify(bodyMetadata));
   
     axios.patch(
         'https://api.hubapi.com/engagements/v1/engagements/' + engagementId,
