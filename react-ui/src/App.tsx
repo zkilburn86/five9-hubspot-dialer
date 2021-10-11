@@ -41,7 +41,6 @@ function App() {
     axios.get('/auth/current-session').then(({data}) => {
       setAuth(data);
     });
-    DispositionHandler.storeDispositions();
   }, []);
 
   if (auth === null) {
@@ -55,6 +54,7 @@ function App() {
     );
   }
   if (auth) {
+    DispositionHandler.storeDispositions();
     return (
       <div className="App">
         <header className="App-header">
