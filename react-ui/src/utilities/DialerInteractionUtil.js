@@ -21,6 +21,7 @@ class DialerInteractionHandler {
           debugMode: false,
           eventHandlers: {
             onReady: () => {
+              console.log('HS is Ready...');
               cti.initialized({
                 isLoggedIn: true,
                 sizeInfo: defaultSize

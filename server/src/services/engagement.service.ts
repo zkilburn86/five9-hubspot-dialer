@@ -40,7 +40,7 @@ const updateEngagement = (user, req) => {
   if (dispositionId !== '') {
     bodyMetadata.metadata.disposition = dispositionId;
   }
-  console.log('Metadata = ' + bodyMetadata);
+  console.log('Metadata = ' + JSON.stringify(bodyMetadata));
   
     axios.patch(
         'https://api.hubapi.com/engagements/v1/engagements/' + engagementId,

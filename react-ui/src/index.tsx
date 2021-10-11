@@ -12,7 +12,7 @@ const callback = () => {
     document.readyState === "interactive" ||
     document.readyState === "complete"
   ) {
-    window.setTimeout(() => dialerInteractions.callback(), 1000);
+    window.setTimeout(() => dialerInteractions.callback(), 500);
   } else {
     document.addEventListener("DOMContentLoaded", dialerInteractions.callback);
   }
