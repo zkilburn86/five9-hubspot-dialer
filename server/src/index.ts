@@ -44,7 +44,8 @@ app.use(helmet({
                 "https://cdnjs.cloudflare.com", 
                 "'sha256-G2fRka9lB4aluMRByPZWSlTusEZO/ht+n0eYeALQEcg='",
                 "'sha256-Sp5KYWn6waQ6HUfejFOTYk/gHJ4F2j8iWc82zHnH3PU='",
-                "'sha256-By8tg0wmYA/WBn3TRGe5fjD0QkgghbkF3lSDVOjckz0='"
+                "'sha256-By8tg0wmYA/WBn3TRGe5fjD0QkgghbkF3lSDVOjckz0='",
+                "'sha256-QGcVAXZHYeMIVF5FPtLj8xVt+kIVezAIOxDmpvmPYnY='"
             ],
             "style-src": [
                 "'self'",

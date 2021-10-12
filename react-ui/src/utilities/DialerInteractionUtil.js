@@ -1,6 +1,6 @@
 import CallingExtensions from "@hubspot/calling-extensions-sdk";
 import RelationshipMapper from './RelationshipMapper';
-import axios from 'axios';
+import DispositionHandler from './DispositionHandler';
 
 let relationshipMapper = new RelationshipMapper();
 
@@ -21,6 +21,7 @@ class DialerInteractionHandler {
           debugMode: false,
           eventHandlers: {
             onReady: () => {
+              console.log('HS is Ready');
               cti.initialized({
                 isLoggedIn: true,
                 sizeInfo: defaultSize
@@ -134,25 +135,29 @@ class DialerInteractionHandler {
     
             callFinished: function (params) {
               let engagementId = relationshipMapper.engagement.engagementId;
-              
+              let five9Disposition = params.callLogData.disposition.name;
+              let hubspotDispositionId = DispositionHandler.getDispositionId(five9Disposition);
+
+              let url = '/api/engagement?engagementId=' + engagementId + '&disposition=' + hubspotDispositionId;
+
               console.log('F9 Call Finished: ' + JSON.stringify(params));
-                cti.callCompleted({
-                    createEngagement: true,
-                    hideWidget: true
-                });
-                
-                fetch('/api/engagement?engagementId=' + engagementId, {
-                  method: 'GET',
-                  credentials: 'same-origin',
-                  mode: 'same-origin'
-                })
-                .then(response => response.json())
-                .then(data => {
-                  console.log('Success: ', data);
-                })
-                .catch((error) => {
-                  console.error('Error: ', error);
-                });
+              cti.callCompleted({
+                  createEngagement: true,
+                  hideWidget: true
+              });
+              
+              fetch(url, {
+                method: 'GET',
+                credentials: 'same-origin',
+                mode: 'same-origin'
+              })
+              .then(response => response.json())
+              .then(data => {
+                console.log('Success: ', data);
+              })
+              .catch((error) => {
+                console.error('Error: ', error);
+              });
             },
     
             callAccepted: function (params) {

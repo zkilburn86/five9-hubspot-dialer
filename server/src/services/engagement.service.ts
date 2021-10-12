@@ -2,14 +2,21 @@ import express from 'express';
 import passport from 'passport';
 import axios from 'axios';
 
+type EngagementMetadata = {
+  metadata: {
+    status: string;
+    fromNumber: string;
+    disposition?: string;
+  };
+}
+
 module.exports = {
     getEngagement: (req, res) => {
       passport.authenticate('jwt', { session: false }, (err, user) => {
         if (err || !user) {
           res.status(401);
         } else {
-          let engagementId = req.query.engagementId;
-          updateEngagement(user, engagementId);
+          updateEngagement(user, req);
           res.status(200).json({created: true});
         }
       })(req, res);
@@ -17,15 +24,24 @@ module.exports = {
     }
 }
 
-const updateEngagement = (user, engagementId) => {
+const updateEngagement = (user, req) => {
+  let engagementId = req.query.engagementId;
+  let dispositionId = req.query.disposition;  
+
+  let bodyMetadata: EngagementMetadata = {
+    metadata: {
+      status: 'COMPLETED',
+      fromNumber: '(575) 221-0446'
+    }
+  }
+
+  if (dispositionId !== '') {
+    bodyMetadata.metadata.disposition = dispositionId;
+  }
+  
     axios.patch(
         'https://api.hubapi.com/engagements/v1/engagements/' + engagementId,
-        {
-          metadata: {
-            status: 'COMPLETED',
-            fromNumber: '(575) 221-0446'
-          }
-        },
+        bodyMetadata,
         {
           headers: {
             'Authorization': 'Bearer ' + user.token

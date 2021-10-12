@@ -1,4 +1,5 @@
 import './App.css';
+import DispositionHandler from './utilities/DispositionHandler';
 import { X, LogOut } from 'react-feather';
 import { LoopCircleLoading } from 'react-loadingg';
 import { useEffect, useState } from 'react';
@@ -39,7 +40,7 @@ function App() {
   useEffect(() => {
     axios.get('/auth/current-session').then(({data}) => {
       setAuth(data);
-    })
+    });
   }, []);
 
   if (auth === null) {
@@ -53,6 +54,7 @@ function App() {
     );
   }
   if (auth) {
+    DispositionHandler.storeDispositions();
     return (
       <div className="App">
         <header className="App-header">
