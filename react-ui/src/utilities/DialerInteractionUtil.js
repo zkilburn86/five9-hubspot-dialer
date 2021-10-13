@@ -1,6 +1,6 @@
 import CallingExtensions from "@hubspot/calling-extensions-sdk";
 import RelationshipMapper from './RelationshipMapper';
-import DispositionHandler from './DispositionHandler';
+import EngagementUtility from './EngagementUtility';
 
 let relationshipMapper = new RelationshipMapper();
 
@@ -135,10 +135,9 @@ class DialerInteractionHandler {
     
             callFinished: function (params) {
               let engagementId = relationshipMapper.engagement.engagementId;
-              let five9Disposition = params.callLogData.disposition.name;
-              let hubspotDispositionId = DispositionHandler.getDispositionId(five9Disposition);
+              let queryString = EngagementUtility.getQueryString(engagementId, params);
 
-              let url = '/api/engagement?engagementId=' + engagementId + '&disposition=' + hubspotDispositionId;
+              let url = '/api/engagement?' + queryString;
 
               console.log('F9 Call Finished: ' + JSON.stringify(params));
               cti.callCompleted({
