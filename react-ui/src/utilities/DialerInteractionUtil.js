@@ -65,22 +65,10 @@ class DialerInteractionHandler {
             },
             onVisibilityChanged: (data, rawEvent) => {
               console.log('HS onVisibilityChanged: ' + JSON.stringify(data));
-              if (!data.isMinimized && !data.isHidden) {
-                crmApi.suggestedNumbers({
-                  suggestedNumbers: [{
-                    clickToDialNumber: relationshipMapper.contact.phoneNumber, crmObject: {
-                      id: relationshipMapper.contact.recordId, 
-                      label: "Contact"
-                    }
-                  }]
-                });
-  
+              if (!data.isMinimized && !data.isHidden) {  
                 crmApi.click2dial({
                   click2DialData: {
-                    clickToDialNumber: relationshipMapper.contact.phoneNumber, crmObject: {
-                      id: relationshipMapper.contact.recordId, 
-                      label: "Contact"
-                    }
+                    clickToDialNumber: relationshipMapper.contact.phoneNumber
                   }
                 });
               }
@@ -91,19 +79,13 @@ class DialerInteractionHandler {
         crmApi.registerApi({
             getAdtConfig: function (params) {
                 var config = {
-                    providerName: 'Demo CRM ADT adapter',
+                    providerName: 'Five9 HubSpot Dialer',
                     myCallsTodayEnabled: true,
                     myChatsTodayEnabled: false,
                     myEmailsTodayEnabled: false,
                     showContactInfo: false
                 };
                 return Promise.resolve(config);
-            },
-            search: function (params) {
-              console.log('F9 Search: ' + JSON.stringify(params));
-                var crmObjects = [{id: relationshipMapper.contact.recordId, label: "Contact"}];
-                return Promise.resolve({crmObjects: crmObjects, screenPopObject: crmObjects[0]}); 
-    
             },
             saveLog: function (params) {
               console.log('F9 Save Log: ' + JSON.stringify(params));
