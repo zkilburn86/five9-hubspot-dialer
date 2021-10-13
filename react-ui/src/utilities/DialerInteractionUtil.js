@@ -66,7 +66,7 @@ class DialerInteractionHandler {
             onVisibilityChanged: (data, rawEvent) => {
               console.log('HS onVisibilityChanged: ' + JSON.stringify(data));
               if (!data.isMinimized && !data.isHidden) {  
-                crmApi.click2dial({
+                interactionApi.click2dial({
                   click2DialData: {
                     clickToDialNumber: relationshipMapper.contact.phoneNumber
                   }
