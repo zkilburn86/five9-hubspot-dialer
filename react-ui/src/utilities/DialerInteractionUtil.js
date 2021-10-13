@@ -43,6 +43,24 @@ class DialerInteractionHandler {
               relationshipMapper.engagement.ownerId = data.ownerId;
               relationshipMapper.engagement.type = 'CALL';
               console.log('HS onDialNumber Engagement: ' + JSON.stringify(relationshipMapper.contact));
+              
+              crmApi.suggestedNumbers({
+                suggestedNumbers: [{
+                  clickToDialNumber: data.phoneNumber, crmObject: {
+                    id: data.objectId, 
+                    label: "Contact"
+                  }
+                }]
+              });
+
+              crmApi.click2dial({
+                click2DialData: {
+                  clickToDialNumber: data.phoneNumber, crmObject: {
+                    id: data.objectId, 
+                    label: "Contact"
+                  }
+                }
+              });
 
               window.setTimeout(
                 () =>
