@@ -44,24 +44,6 @@ class DialerInteractionHandler {
               relationshipMapper.engagement.type = 'CALL';
               console.log('HS onDialNumber Engagement: ' + JSON.stringify(relationshipMapper.contact));
               
-              crmApi.suggestedNumbers({
-                suggestedNumbers: [{
-                  clickToDialNumber: data.phoneNumber, crmObject: {
-                    id: data.objectId, 
-                    label: "Contact"
-                  }
-                }]
-              });
-
-              crmApi.click2dial({
-                click2DialData: {
-                  clickToDialNumber: data.phoneNumber, crmObject: {
-                    id: data.objectId, 
-                    label: "Contact"
-                  }
-                }
-              });
-
               window.setTimeout(
                 () =>
                   cti.outgoingCall({
@@ -83,6 +65,25 @@ class DialerInteractionHandler {
             },
             onVisibilityChanged: (data, rawEvent) => {
               console.log('HS onVisibilityChanged: ' + JSON.stringify(data));
+              if (!data.isMinimized && !data.isHidden) {
+                crmApi.suggestedNumbers({
+                  suggestedNumbers: [{
+                    clickToDialNumber: relationshipMapper.contact.phoneNumber, crmObject: {
+                      id: relationshipMapper.contact.recordId, 
+                      label: "Contact"
+                    }
+                  }]
+                });
+  
+                crmApi.click2dial({
+                  click2DialData: {
+                    clickToDialNumber: relationshipMapper.contact.phoneNumber, crmObject: {
+                      id: relationshipMapper.contact.recordId, 
+                      label: "Contact"
+                    }
+                  }
+                });
+              }
             }
           }
         });
@@ -100,7 +101,7 @@ class DialerInteractionHandler {
             },
             search: function (params) {
               console.log('F9 Search: ' + JSON.stringify(params));
-                var crmObjects = [{id: "123", label: "Contact", name: "Joe", isWho: true, isWhat: false, fields:[{displayName: "Company", value: "ABC"}]}];
+                var crmObjects = [{id: relationshipMapper.contact.recordId, label: "Contact"}];
                 return Promise.resolve({crmObjects: crmObjects, screenPopObject: crmObjects[0]}); 
     
             },
