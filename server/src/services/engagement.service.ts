@@ -2,15 +2,17 @@ import express from 'express';
 import passport from 'passport';
 import axios from 'axios';
 
+const APPID = Number(process.env.HUBSPOT_APP_ID);
+
 type EngagementMetadata = {
   metadata: {
     status: string;
     disposition: string;
     fromNumber: string;
-    durationMilliseconds: string;
+    durationMilliseconds: number;
     title: string;
     recordingUrl: string;
-    appId: string;
+    appId: number;
   };
 }
 
@@ -36,10 +38,10 @@ const updateEngagement = (user, req) => {
       status: 'COMPLETED',
       disposition: query.disposition,
       fromNumber: query.fromNumber,
-      durationMilliseconds: query.durationMilliseconds,
+      durationMilliseconds: Number(query.durationMilliseconds),
       title: query.title,
       recordingUrl: query.recordingUrl,
-      appId: query.appId
+      appId: APPID
     }
   }
 

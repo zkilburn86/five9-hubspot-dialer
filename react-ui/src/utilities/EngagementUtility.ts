@@ -1,5 +1,4 @@
 import DispositionHandler from "./DispositionHandler";
-import { env } from 'process';
 
 class EngagementUtility {
 
@@ -14,7 +13,6 @@ class EngagementUtility {
         query.set('durationMilliseconds', params.callLogData.talkTime);
         query.set('title', params.callLogData.subject);
         query.set('recordingUrl', '');
-        query.set('appId', env.HUBSPOT_APP_ID as string);
 
         return query.toString();
     }
