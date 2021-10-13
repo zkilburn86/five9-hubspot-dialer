@@ -5,8 +5,12 @@ import axios from 'axios';
 type EngagementMetadata = {
   metadata: {
     status: string;
+    disposition: string;
     fromNumber: string;
-    disposition?: string;
+    durationMilliseconds: string;
+    title: string;
+    recordingUrl: string;
+    appId: string;
   };
 }
 
@@ -25,22 +29,22 @@ module.exports = {
 }
 
 const updateEngagement = (user, req) => {
-  let engagementId = req.query.engagementId;
-  let dispositionId = req.query.disposition;  
+  let query = req.query;
 
   let bodyMetadata: EngagementMetadata = {
     metadata: {
       status: 'COMPLETED',
-      fromNumber: '(575) 221-0446'
+      disposition: query.disposition,
+      fromNumber: query.fromNumber,
+      durationMilliseconds: query.durationMilliseconds,
+      title: query.title,
+      recordingUrl: query.recordingUrl,
+      appId: query.appId
     }
   }
 
-  if (dispositionId !== '') {
-    bodyMetadata.metadata.disposition = dispositionId;
-  }
-  
     axios.patch(
-        'https://api.hubapi.com/engagements/v1/engagements/' + engagementId,
+        'https://api.hubapi.com/engagements/v1/engagements/' + query.engagementId,
         bodyMetadata,
         {
           headers: {
@@ -49,7 +53,7 @@ const updateEngagement = (user, req) => {
         }
     ).then((response) => {        
         if (response.status !== 200) {
-            console.error('Unable to update engagement - Id: ' + engagementId);
+            console.error('Unable to update engagement - Id: ' + query.engagementId);
         }
     }).catch((err) => {
         console.error(err);
