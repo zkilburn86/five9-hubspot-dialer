@@ -100,6 +100,9 @@ app.use('/api/engagement', engagement);
 const disposition = require('./routes/disposition');
 app.use('/api/disposition', disposition);
 
+const card = require('./routes/card');
+app.use('/api/card-verify', card);
+
 if (isProd) {
     app.use(express.static(path.join(__dirname, '..', '..', 'react-ui', 'build')));
 
