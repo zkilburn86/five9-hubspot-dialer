@@ -43,7 +43,7 @@ class DialerInteractionHandler {
               relationshipMapper.engagement.ownerId = data.ownerId;
               relationshipMapper.engagement.type = 'CALL';
               console.log('HS onDialNumber Engagement: ' + JSON.stringify(relationshipMapper.contact));
-
+              
               window.setTimeout(
                 () =>
                   cti.outgoingCall({
@@ -65,6 +65,13 @@ class DialerInteractionHandler {
             },
             onVisibilityChanged: (data, rawEvent) => {
               console.log('HS onVisibilityChanged: ' + JSON.stringify(data));
+              if (!data.isMinimized && !data.isHidden) {  
+                interactionApi.click2dial({
+                  click2DialData: {
+                    clickToDialNumber: relationshipMapper.contact.phoneNumber
+                  }
+                });
+              }
             }
           }
         });
@@ -72,7 +79,7 @@ class DialerInteractionHandler {
         crmApi.registerApi({
             getAdtConfig: function (params) {
                 var config = {
-                    providerName: 'Demo CRM ADT adapter',
+                    providerName: 'Five9 HubSpot Dialer',
                     myCallsTodayEnabled: true,
                     myChatsTodayEnabled: false,
                     myEmailsTodayEnabled: false,
@@ -84,7 +91,7 @@ class DialerInteractionHandler {
               console.log('F9 Search: ' + JSON.stringify(params));
                 var crmObjects = [{id: "123", label: "Contact", name: "Joe", isWho: true, isWhat: false, fields:[{displayName: "Company", value: "ABC"}]}];
                 return Promise.resolve({crmObjects: crmObjects, screenPopObject: crmObjects[0]}); 
-    
+
             },
             saveLog: function (params) {
               console.log('F9 Save Log: ' + JSON.stringify(params));
