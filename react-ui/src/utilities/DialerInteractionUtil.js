@@ -87,6 +87,12 @@ class DialerInteractionHandler {
                 };
                 return Promise.resolve(config);
             },
+            search: function (params) {
+              console.log('F9 Search: ' + JSON.stringify(params));
+                var crmObjects = [{id: "123", label: "Contact", name: "Joe", isWho: true, isWhat: false, fields:[{displayName: "Company", value: "ABC"}]}];
+                return Promise.resolve({crmObjects: crmObjects, screenPopObject: crmObjects[0]}); 
+
+            },
             saveLog: function (params) {
               console.log('F9 Save Log: ' + JSON.stringify(params));
             },
