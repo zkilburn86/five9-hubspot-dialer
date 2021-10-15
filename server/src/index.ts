@@ -14,6 +14,7 @@ require('dotenv').config();
 
 const isProd = process.env.NODE_ENV === 'production' ? true : false;
 const httpsRequired = process.env.REQUIRE_HTTPS === 'true' ? true : false;
+const DB_HOST = process.env.DB_HOST;
 
 const morgan = require('morgan');
 const cors = require('cors');
@@ -22,6 +23,7 @@ const helmet = require('helmet');
 const hpp = require('hpp');
 const csurf = require('csurf');
 const rateLimit = require('express-rate-limit');
+const db = require('./db');
 
 const port = process.env.PORT || 5000;
 
@@ -29,6 +31,12 @@ const passport = require('./middlewares/passport');
 
 const app = express();
 app.use(morgan('tiny'));
+
+if (isProd) {
+    db.connect(process.env.MONGO_CONNECTION)
+} else {
+    db.connect(DB_HOST);
+}
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());

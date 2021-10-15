@@ -1,34 +1,75 @@
-import passport from "passport";
+import models from '../models';
+const crypto = require('crypto');
 
 module.exports = {
     getCardVerify: (req, res) => {
-        console.log('Card verify request query: ' + JSON.stringify(req.query));
+
+        verifySignature(req);
         
-        passport.authenticate('jwt', { session: false }, (err, user) => {
-            if (err || !user) {
-                res.status(401).json({
-                    results: [
-                        {
-                            objectId: 101,
-                            title: 'This is a Test Auth Failed',
-                            link: 'https://f9hsdialer-pr-5.herokuapp.com/',
-                            email: 'zach@kilburnconsulting.com'
-                        }
-                    ]
-                });
-            } else {
-                res.status(200).json({
-                    results: [
-                        {
-                            objectId: 101,
-                            title: 'This is a Test',
-                            link: 'https://f9hsdialer-pr-5.herokuapp.com/',
-                            email: 'zach@kilburnconsulting.com'
-                        }
-                    ]
-                });
+        if (JSON.stringify(req.query) === '{}') {
+            return res.status(400);
+        }
+
+        const objectId = Number(req.query.associatedObjectId);
+        const now = new Date();
+        const filter = { 
+            hubSpotUserId: req.query.userId,
+            hubSpotPortalId: req.query.portalId
+        };
+
+        models.User.findOne(filter, (err, result) => {
+            console.log('mongo result ' + result);
+            
+                if (err || !result) {
+                    console.error(err);
+                    return res.status(401).json({
+                        results: [
+                            {
+                                objectId: objectId,
+                                title: 'Not Authorized Please Login',
+                                link: 'https://f9hsdialer-pr-5.herokuapp.com/'
+                            }
+                        ]
+                    });
+                }
+                if (result && result.sessionExpiration > now) {
+                    return res.status(200).json({
+                        results: [
+                            {
+                                objectId: objectId,
+                                title: 'You Are Authorized',
+                                link: 'https://f9hsdialer-pr-5.herokuapp.com/'
+                            }
+                        ]
+                    });
+                }
+                if (result && result.sessionExpiration < now) {
+                    return res.status(401).json({
+                        results: [
+                            {
+                                objectId: objectId,
+                                title: 'Not Authorized Please Login',
+                                link: 'https://f9hsdialer-pr-5.herokuapp.com/'
+                            }
+                        ]
+                    });
+                }
             }
-        })(req, res);
-        return;
+        );
+
     }
 }
+
+function verifySignature(req) {
+    //TODO make request url dynamic
+    const sourceString = process.env.HS_CLIENT_SECRET +
+                        'GET' +
+                        'https://f9hsdialer-pr-5.herokuapp.com/api/card-verify' +
+                        JSON.stringify(req.body);
+    console.log('sourceString ' + sourceString);
+    const hash = crypto.createHash('sha256').update(sourceString).digest('hex');
+    console.log('hash: ' + hash);
+    
+    console.log(req.get('x-hubspot-signature') === hash);
+    
+}   
