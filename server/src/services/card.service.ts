@@ -62,9 +62,9 @@ module.exports = {
 
 function verifySignature(req) {
     //TODO make request url dynamic
-    const sourceString = process.env.HS_CLIENT_SECRET +
+    const sourceString = process.env.CALLING_EXT_APP_SECRET +
                         'GET' +
-                        'https://f9hsdialer-pr-5.herokuapp.com/api/card-verify'
+                        'https://' + process.env.HEROKU_APP_NAME + '.herokuapp.com' + req.originalUrl;
     console.log('sourceString ' + sourceString);
     const hash = crypto.createHash('sha256').update(sourceString).digest('hex');
     console.log('hash: ' + hash);
