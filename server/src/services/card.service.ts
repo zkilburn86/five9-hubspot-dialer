@@ -64,11 +64,13 @@ function verifySignature(req) {
     //TODO make request url dynamic
     const sourceString = process.env.HS_CLIENT_SECRET +
                         'GET' +
-                        'https://f9hsdialer-pr-5.herokuapp.com/api/card-verify' +
-                        JSON.stringify(req.body);
+                        'https://f9hsdialer-pr-5.herokuapp.com/api/card-verify'
     console.log('sourceString ' + sourceString);
     const hash = crypto.createHash('sha256').update(sourceString).digest('hex');
     console.log('hash: ' + hash);
+
+    console.log('hs signature: ' + req.get('x-hubspot-signature'));
+    
     
     console.log(req.get('x-hubspot-signature') === hash);
     
