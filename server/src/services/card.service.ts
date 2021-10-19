@@ -28,9 +28,9 @@ module.exports = {
                         results: [
                             {
                                 objectId: objectId,
-                                title: 'Please Sign In to Call Using Five9',
-                                link: 'https://' + process.env.HEROKU_APP_NAME + '.herokuapp.com/',
-                                details: "We've detected that you're not logged into the Five9 HubSpot Dialer app. Click the link above to login, then refresh this page."
+                                title: 'Click To Enable Calling With Five9',
+                                link: 'https://' + process.env.HEROKU_APP_NAME + '.herokuapp.com/login',
+                                status: "Not Ready - We've detected that you're not logged into the Five9 HubSpot Dialer app. Click the link above to login, then refresh this page."
                             }
                         ]
                     });
@@ -41,7 +41,7 @@ module.exports = {
                             {
                                 objectId: objectId,
                                 title: 'Five9 HubSpot Dialer',
-                                details: "Authenticated - Click-to-Dial Enabled",
+                                status: "Ready - Click-to-Dial Enabled",
 
                             }
                         ]
@@ -52,9 +52,9 @@ module.exports = {
                         results: [
                             {
                                 objectId: objectId,
-                                title: 'Please Sign In to Call Using Five9',
-                                link: 'https://' + process.env.HEROKU_APP_NAME + '.herokuapp.com/',
-                                details: "We've detected that you're not logged into the Five9 HubSpot Dialer app. Click the link above to login, then refresh this page."
+                                title: 'Click To Enable Calling With Five9',
+                                link: 'https://' + process.env.HEROKU_APP_NAME + '.herokuapp.com/login',
+                                status: "Not Ready - We've detected that you're not logged into the Five9 HubSpot Dialer app. Click the link above to login, then refresh this page."
                             }
                         ]
                     });
