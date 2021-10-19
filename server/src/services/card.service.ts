@@ -4,7 +4,9 @@ const crypto = require('crypto');
 module.exports = {
     getCardVerify: (req, res) => {
 
-        verifySignature(req);
+        if (!verifySignature(req)) {
+            return res.status(400);
+        }
         
         if (JSON.stringify(req.query) === '{}') {
             return res.status(400);
@@ -26,8 +28,9 @@ module.exports = {
                         results: [
                             {
                                 objectId: objectId,
-                                title: 'Not Authorized Please Login',
-                                link: 'https://f9hsdialer-pr-5.herokuapp.com/'
+                                title: 'Please Sign In to Call Using Five9',
+                                link: 'https://' + process.env.HEROKU_APP_NAME + '.herokuapp.com/',
+                                description: "We've detected that you're not logged into the Five9 HubSpot Dialer app. Click the link above to login, then refresh this page."
                             }
                         ]
                     });
@@ -37,8 +40,9 @@ module.exports = {
                         results: [
                             {
                                 objectId: objectId,
-                                title: 'You Are Authorized',
-                                link: 'https://f9hsdialer-pr-5.herokuapp.com/'
+                                title: 'Five9 HubSpot Dialer',
+                                description: "Authenticated - Click-to-Dial Enabled",
+
                             }
                         ]
                     });
@@ -48,8 +52,9 @@ module.exports = {
                         results: [
                             {
                                 objectId: objectId,
-                                title: 'Not Authorized Please Login',
-                                link: 'https://f9hsdialer-pr-5.herokuapp.com/'
+                                title: 'Please Sign In to Call Using Five9',
+                                link: 'https://' + process.env.HEROKU_APP_NAME + '.herokuapp.com/',
+                                description: "We've detected that you're not logged into the Five9 HubSpot Dialer app. Click the link above to login, then refresh this page."
                             }
                         ]
                     });
@@ -61,17 +66,13 @@ module.exports = {
 }
 
 function verifySignature(req) {
-    //TODO make request url dynamic
+
     const sourceString = process.env.CALLING_EXT_APP_SECRET +
                         'GET' +
                         'https://' + process.env.HEROKU_APP_NAME + '.herokuapp.com' + req.originalUrl;
-    console.log('sourceString ' + sourceString);
-    const hash = crypto.createHash('sha256').update(sourceString).digest('hex');
-    console.log('hash: ' + hash);
 
-    console.log('hs signature: ' + req.get('x-hubspot-signature'));
-    
-    
-    console.log(req.get('x-hubspot-signature') === hash);
-    
+    const hash = crypto.createHash('sha256').update(sourceString).digest('hex');
+
+    return req.get('x-hubspot-signature') === hash;
+
 }   

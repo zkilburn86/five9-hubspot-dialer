@@ -1,4 +1,5 @@
 import { Error } from "mongoose";
+import models from "./models";
 
 const mongoose = require('mongoose');
 
@@ -16,5 +17,9 @@ module.exports = {
 
     close: () => {
         mongoose.connection.close();
+    },
+
+    reset: () => {
+        models.User.updateMany({}, { $set: { sessionExpiration: new Date(0) } });
     }
 };

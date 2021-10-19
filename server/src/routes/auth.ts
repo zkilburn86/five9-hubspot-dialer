@@ -76,7 +76,6 @@ router.get('/logout', (req, res) => {
 router.get('/current-session', (req, res) => {
     passport.authenticate('jwt', { session: false }, (err, user) => {
         if (err || !user) {
-            //TODO: check mongo for session.
             res.send(false);
         } else {
             res.send(user);

@@ -38,6 +38,8 @@ if (isProd) {
     db.connect(DB_HOST);
 }
 
+db.reset();
+
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.use(cors({ credentials: true }));
