@@ -38,8 +38,6 @@ if (isProd) {
     db.connect(DB_HOST);
 }
 
-db.getCollection('users').updateMany({}, { $set: { sessionExpiration: new Date(0) } });
-
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.use(cors({ credentials: true }));

@@ -1,5 +1,4 @@
 import { Error } from "mongoose";
-import models from "./models";
 
 const mongoose = require('mongoose');
 
