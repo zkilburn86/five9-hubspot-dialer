@@ -20,7 +20,6 @@ module.exports = {
         };
 
         models.User.findOne(filter, (err, result) => {
-            console.log('mongo result ' + result);
             
                 if (err || !result) {
                     console.error(err);
