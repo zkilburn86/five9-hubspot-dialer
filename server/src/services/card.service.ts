@@ -12,7 +12,6 @@ module.exports = {
             return res.status(400);
         }
 
-        const objectId = Number(req.query.associatedObjectId);
         const now = new Date();
         const filter = { 
             hubSpotUserId: req.query.userId,
@@ -27,10 +26,11 @@ module.exports = {
                     return res.status(401).json({
                         results: [
                             {
-                                objectId: objectId,
+                                objectId: 242588,
                                 title: 'Click To Enable Calling With Five9',
-                                link: 'https://' + process.env.HEROKU_APP_NAME + '.herokuapp.com/login',
-                                status: "Not Ready - We've detected that you're not logged into the Five9 HubSpot Dialer app. Click the link above to login, then refresh this page."
+                                link: 'https://' + process.env.HEROKU_APP_NAME + '.herokuapp.com/auth/login',
+                                status: 'notready',
+                                description: "We've detected that you're not logged in to the Five9 HubSpot Dialer app. Click the link above to login, then refresh this page."
                             }
                         ]
                     });
@@ -39,10 +39,10 @@ module.exports = {
                     return res.status(200).json({
                         results: [
                             {
-                                objectId: objectId,
+                                objectId: 242588,
                                 title: 'Five9 HubSpot Dialer',
-                                status: "Ready - Click-to-Dial Enabled",
-
+                                status: "ready",
+                                description: "Click-to-Dial Enabled"
                             }
                         ]
                     });
@@ -51,10 +51,11 @@ module.exports = {
                     return res.status(401).json({
                         results: [
                             {
-                                objectId: objectId,
+                                objectId: 242588,
                                 title: 'Click To Enable Calling With Five9',
-                                link: 'https://' + process.env.HEROKU_APP_NAME + '.herokuapp.com/login',
-                                status: "Not Ready - We've detected that you're not logged into the Five9 HubSpot Dialer app. Click the link above to login, then refresh this page."
+                                link: 'https://' + process.env.HEROKU_APP_NAME + '.herokuapp.com/auth/login',
+                                status: 'notready',
+                                description: "We've detected that you're not logged in to the Five9 HubSpot Dialer app. Click the link above to login, then refresh this page."
                             }
                         ]
                     });
