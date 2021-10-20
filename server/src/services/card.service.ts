@@ -12,6 +12,7 @@ module.exports = {
             return res.status(400);
         }
 
+        const objectId = Number(process.env.CARD_OBJECT_ID)
         const now = new Date();
         const filter = { 
             hubSpotUserId: req.query.userId,
@@ -26,7 +27,7 @@ module.exports = {
                     return res.status(401).json({
                         results: [
                             {
-                                objectId: 242588,
+                                objectId: objectId,
                                 title: 'Click To Enable Calling With Five9',
                                 link: 'https://' + process.env.HEROKU_APP_NAME + '.herokuapp.com/auth/login',
                                 status: 'notready',
@@ -39,7 +40,7 @@ module.exports = {
                     return res.status(200).json({
                         results: [
                             {
-                                objectId: 242588,
+                                objectId: objectId,
                                 title: 'Five9 HubSpot Dialer',
                                 status: "ready",
                                 description: "Click-to-Dial Enabled"
@@ -51,7 +52,7 @@ module.exports = {
                     return res.status(401).json({
                         results: [
                             {
-                                objectId: 242588,
+                                objectId: objectId,
                                 title: 'Click To Enable Calling With Five9',
                                 link: 'https://' + process.env.HEROKU_APP_NAME + '.herokuapp.com/auth/login',
                                 status: 'notready',
