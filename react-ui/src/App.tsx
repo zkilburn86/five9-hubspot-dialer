@@ -38,7 +38,7 @@ function App() {
   const [auth, setAuth] = useState(null);
 
   useEffect(() => {
-    axios.get('/auth/current-session').then(({data}) => {
+    axios.get('/auth/current-session', {withCredentials: true}).then(({data}) => {
       setAuth(data);
     });
   }, []);
