@@ -24,6 +24,7 @@ const hpp = require('hpp');
 const csurf = require('csurf');
 const rateLimit = require('express-rate-limit');
 const db = require('./db');
+const mongoose = require('mongoose');
 
 const port = process.env.PORT || 5000;
 
@@ -78,7 +79,7 @@ app.use(helmet({
 }));
 app.use(hpp());
 
-let sess: cookieSession = {
+/* let sess: cookieSession = {
     name: 'session',
     secret: uuidv4(),
     expires: new Date(Date.now() + 900000) // 15 min for testing
@@ -86,9 +87,26 @@ let sess: cookieSession = {
 if (httpsRequired) {
     sess.secure = true;
     sess.sameSite = 'none';
-} 
+}  */
 app.set('trust proxy', 1)
-app.use(session(sess));
+//app.use(session(sess));
+app.use(
+    express.session({
+        secret: uuidv4(),
+        resave: true,
+        saveUninitialized: false,
+        store: new (require('express-sessions'))({
+            storage: 'mongodb+srv',
+            instance: mongoose,
+            host: 'mongouser',
+            port: 'vluyeYfM0JyPNS01@cluster0.jb1u9.mongodb.net',
+            db: 'f9hsdialer',
+            collection: 'sessions',
+            expire: 86400
+        }),
+        cookie: { maxAge: 900000 }
+    })
+);
 app.use(csurf());
 
 const limiter = rateLimit({
