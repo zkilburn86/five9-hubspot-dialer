@@ -3,9 +3,11 @@ import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 
 type cookieSession = {
-    name: string,
     secret: string,
-    expires: Date,
+    resave: boolean,
+    saveUninitialized: boolean,
+    cookie: any,
+    store: any,
     secure?: boolean
     sameSite?: string
 }
@@ -18,15 +20,13 @@ const DB_HOST = process.env.DB_HOST;
 
 const morgan = require('morgan');
 const cors = require('cors');
-//const session = require('cookie-session');
 const session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
+const MongoStore = require('connect-mongo');
 const helmet = require('helmet');
 const hpp = require('hpp');
 const csurf = require('csurf');
 const rateLimit = require('express-rate-limit');
 const db = require('./db');
-const mongoose = require('mongoose');
 
 const port = process.env.PORT || 5000;
 
@@ -81,31 +81,26 @@ app.use(helmet({
 }));
 app.use(hpp());
 
-/* let sess: cookieSession = {
-    name: 'session',
+let sess: cookieSession = {
     secret: uuidv4(),
-    expires: new Date(Date.now() + 900000) // 15 min for testing
+    resave: true,
+    saveUninitialized: false,
+    cookie: { maxAge: 900000 },
+    store: MongoStore.create({
+        mongoUrl: process.env.MONGO_CONNECTION,
+        ttl: 900000,
+        autoRemove: 'native'
+    })
 };
+
 if (httpsRequired) {
     sess.secure = true;
     sess.sameSite = 'none';
-}  */
+} 
+
 app.set('trust proxy', 1)
-//app.use(session(sess));
-app.use(session({
-        secret: uuidv4(),
-        resave: true,
-        saveUninitialized: false,
-        cookie: { maxAge: 900000 },
-        secure: true,
-        sameSite: 'none',
-        store: new MongoStore({
-            url: process.env.MONGO_CONNECTION,
-            ttl: 900000,
-            autoRemove: 'native'
-        })
-    })
-);
+
+app.use(session(sess));
 app.use(csurf());
 
 const limiter = rateLimit({
