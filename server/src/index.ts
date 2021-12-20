@@ -81,7 +81,7 @@ app.use(hpp());
 let sess: cookieSession = {
     name: 'session',
     secret: uuidv4(),
-    expires: new Date(Date.now() + 1 * 60 * 60 * 1000) // 1 hour for testing
+    expires: new Date(Date.now() + 900000) // 15 min for testing
 };
 if (httpsRequired) {
     sess.secure = true;
