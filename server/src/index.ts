@@ -18,7 +18,8 @@ const DB_HOST = process.env.DB_HOST;
 
 const morgan = require('morgan');
 const cors = require('cors');
-const session = require('cookie-session');
+//const session = require('cookie-session');
+const session = require('express-session');
 const helmet = require('helmet');
 const hpp = require('hpp');
 const csurf = require('csurf');
@@ -90,8 +91,7 @@ if (httpsRequired) {
 }  */
 app.set('trust proxy', 1)
 //app.use(session(sess));
-app.use(
-    express.session({
+app.use(session({
         secret: uuidv4(),
         resave: true,
         saveUninitialized: false,
