@@ -20,6 +20,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 //const session = require('cookie-session');
 const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 const helmet = require('helmet');
 const hpp = require('hpp');
 const csurf = require('csurf');
@@ -97,7 +98,12 @@ app.use(session({
         saveUninitialized: false,
         cookie: { maxAge: 900000 },
         secure: true,
-        sameSite: 'none'
+        sameSite: 'none',
+        store: new MongoStore({
+            url: process.env.MONGO_CONNECTION,
+            ttl: 900000,
+            autoRemove: 'native'
+        })
     })
 );
 app.use(csurf());

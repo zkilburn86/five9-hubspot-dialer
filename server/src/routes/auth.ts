@@ -69,7 +69,7 @@ router.get('/logout', (req, res) => {
         }
     );
 
-    req.session.destroy;
+    req.session = null;
     res.redirect('/');
 });
 
