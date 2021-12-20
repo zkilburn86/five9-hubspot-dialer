@@ -95,16 +95,9 @@ app.use(session({
         secret: uuidv4(),
         resave: true,
         saveUninitialized: false,
-        store: new (require('express-sessions'))({
-            storage: 'mongodb+srv',
-            instance: mongoose,
-            host: 'mongouser',
-            port: 'vluyeYfM0JyPNS01@cluster0.jb1u9.mongodb.net',
-            db: 'f9hsdialer',
-            collection: 'sessions',
-            expire: 86400
-        }),
-        cookie: { maxAge: 900000 }
+        cookie: { maxAge: 900000 },
+        secure: true,
+        sameSite: 'none'
     })
 );
 app.use(csurf());
