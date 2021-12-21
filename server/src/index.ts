@@ -83,10 +83,10 @@ let sess: cookieSession = {
     secret: uuidv4(),
     resave: true,
     saveUninitialized: false,
-    cookie: { maxAge: 900000 },
+    cookie: { maxAge: 6 * 60 * 60 * 1000 },
     store: MongoStore.create({
         mongoUrl: process.env.MONGO_CONNECTION,
-        ttl: 900000,
+        ttl: 6 * 60 * 60 * 1000,
         autoRemove: 'native'
     })
 };
