@@ -74,11 +74,11 @@ router.get('/logout', (req, res) => {
 });
 
 router.get('/current-session', (req, res) => {
-    passport.authenticate('jwt', { session: false }, (err, user) => {
-        if (err || !user) {
+    passport.authenticate('jwt', { session: false }, (err, profile) => {
+        if (err || !profile) {
             res.send(false);
         } else {
-            res.send(user);
+            res.send(profile.user);
         }
     })(req, res);
 });

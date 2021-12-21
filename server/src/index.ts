@@ -7,9 +7,7 @@ type cookieSession = {
     resave: boolean,
     saveUninitialized: boolean,
     cookie: any,
-    store: any,
-    secure?: boolean
-    sameSite?: string
+    store: any
 }
 
 require('dotenv').config();
@@ -94,8 +92,8 @@ let sess: cookieSession = {
 };
 
 if (httpsRequired) {
-    sess.secure = true;
-    sess.sameSite = 'none';
+    sess.cookie.secure = true;
+    sess.cookie.sameSite = 'none';
 } 
 
 app.set('trust proxy', 1)
