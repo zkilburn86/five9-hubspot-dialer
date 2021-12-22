@@ -3,11 +3,11 @@ import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 
 type cookieSession = {
-    name: string,
     secret: string,
-    expires: Date,
-    secure?: boolean
-    sameSite?: string
+    resave: boolean,
+    saveUninitialized: boolean,
+    cookie: any,
+    store: any
 }
 
 require('dotenv').config();
@@ -18,7 +18,8 @@ const DB_HOST = process.env.DB_HOST;
 
 const morgan = require('morgan');
 const cors = require('cors');
-const session = require('cookie-session');
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
 const helmet = require('helmet');
 const hpp = require('hpp');
 const csurf = require('csurf');
@@ -79,15 +80,24 @@ app.use(helmet({
 app.use(hpp());
 
 let sess: cookieSession = {
-    name: 'session',
     secret: uuidv4(),
-    expires: new Date(Date.now() + 6 * 60 * 60 * 1000) // 6 hours
+    resave: true,
+    saveUninitialized: false,
+    cookie: { maxAge: 6 * 60 * 60 * 1000 },
+    store: MongoStore.create({
+        mongoUrl: process.env.MONGO_CONNECTION,
+        ttl: 6 * 60 * 60 * 1000,
+        autoRemove: 'native'
+    })
 };
+
 if (httpsRequired) {
-    sess.secure = true;
-    sess.sameSite = 'none';
+    sess.cookie.secure = true;
+    sess.cookie.sameSite = 'none';
 } 
+
 app.set('trust proxy', 1)
+
 app.use(session(sess));
 app.use(csurf());
 
