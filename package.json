@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "node ./server/dist/index.js",
+    "start": "echo $(cat .env) | node ./server/dist/index.js",
     "build": "yarn --cwd ./react-ui install && yarn --cwd ./react-ui build && yarn --cwd ./server install && yarn --cwd ./server build",
     "deploy": "git add . && git commit -m \"heroku deploy\" && git push origin main && git push heroku main"
   },
