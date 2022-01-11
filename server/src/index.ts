@@ -26,7 +26,7 @@ const csurf = require('csurf');
 const rateLimit = require('express-rate-limit');
 const db = require('./db');
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 8080;
 
 const passport = require('./middlewares/passport');
 
