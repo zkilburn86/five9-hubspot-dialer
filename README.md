@@ -10,7 +10,28 @@ Further Five9 and Hubspot documentation:
 * [Hubspot Calling Extensions SDK](https://developers.hubspot.com/docs/api/crm/extensions/calling-sdk)
 * [Five9 Agent Desktop Toolkit](https://app.five9.com/dev/sdk/crm/latest/doc/global.html)
 
+## Running Locally
+---
+### Requirements
+To run the project locally, you will need the following:
+* [Docker](https://www.docker.com/products/docker-desktop)
+* Docker compose (if it is not installed by docker)
+
+### Setup
+Follow the these steps in the terminal:
+1. `cd /path/to/five9-hubspot-dialer/directory`
+1. `cp .env.sample .env`
+1. `vim .env`
+1. Replace the sample values with the required values
+1. `docker compose build` (depending on your setup, it may be `docker-compose` instead)
+
+### Running
+There are currently two ways to run the application. For the core app, you'll want to execute this in the terminal: `docker compose up`
+
+If you want to run the entire environment to do more integration testing, please run the following command: `docker compose --profile full up`
+
 ## Available Scripts
+---
 
 In the project directory, you can run:
 
@@ -32,6 +53,7 @@ This adds all tracked files and creates a commit with a "heroku deploy" message.
 It then pushes to the origin main branch and Heroku main to build and deploy.
 
 ## Heroku
+---
 
 Production version live on Heroku at [five9-hubspot-dialer.herokuapp.com](https://five9-hubspot-dialer.herokuapp.com)
 See [Getting Started on Heroku with Node.js](https://devcenter.heroku.com/articles/getting-started-with-nodejs) for more information. \

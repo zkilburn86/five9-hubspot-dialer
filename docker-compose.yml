@@ -38,9 +38,26 @@ services:
     networks:
       - dialernet
     command: yarn --cwd ./react-ui start
+
+  localstack: #S3 only
+    profiles: ["full"]
+    image: localstack/localstack:latest
+    container_name: localstack-s3
+    environment:
+     - SERVICES=s3:5002
+     - DEFAULT_REGION=us-east-2
+     - DATA_DIR=/tmp/localstack/data
+    ports:
+     - 5002:5002
+     - 9999:8080
+     - 4566:4566
+    volumes:
+      - localstack-data:/tmp/localstack
     
 volumes:
   db:
+  localstack-data:
+    name: localstack-data
 
 networks:
   dialernet:
