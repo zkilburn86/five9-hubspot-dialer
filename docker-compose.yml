@@ -51,9 +51,20 @@ services:
      - 5002:5002
      - 9999:8080
      - 4566:4566
+    networks:
+      - dialernet
     volumes:
       - localstack-data:/tmp/localstack
-    
+
+  sftp:
+    profiles: ["full"]
+    image: atmoz/sftp
+    ports:
+        - 22:22
+    networks:
+      - dialernet
+    command: docker:docker:1001
+
 volumes:
   db:
   localstack-data:
